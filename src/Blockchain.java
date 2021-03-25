@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Blockchain {
 
@@ -13,7 +15,6 @@ public class Blockchain {
         Block b = new Block(0, System.currentTimeMillis(), null, "First Block");
         b.mineBlock(difficulty);
         blocks.add(b);
-
     }
 
     public int getDifficulty() {
@@ -34,7 +35,6 @@ public class Blockchain {
         if (b != null) {
             b.mineBlock(difficulty);
             blocks.add(b);
-
         }
     }
 
@@ -44,28 +44,35 @@ public class Blockchain {
         if (firstBlock.getIndex() != 0) {
             return false;
         }
+
         if (firstBlock.getPreviousHash() != null) {
             return false;
         }
+
         if (firstBlock.getHash() == null ||
                 !Block.calculateHash(firstBlock).equals(firstBlock.getHash())) {
             return false;
         }
+
         return true;
     }
 
     public boolean isValidNewBlock(Block newBlock, Block previousBlock) {
-        if (newBlock != null && previousBlock != null) {
+        if (newBlock != null  &&  previousBlock != null) {
             if (previousBlock.getIndex() + 1 != newBlock.getIndex()) {
                 return false;
             }
-            if (newBlock.getPreviousHash() == null || newBlock.getPreviousHash().equals(previousBlock.getHash())) {
+
+            if (newBlock.getPreviousHash() == null  ||
+                    !newBlock.getPreviousHash().equals(previousBlock.getHash())) {
                 return false;
             }
 
-            if (newBlock.getHash() == null || !Block.calculateHash(newBlock).equals(newBlock.getHash())) {
+            if (newBlock.getHash() == null  ||
+                    !Block.calculateHash(newBlock).equals(newBlock.getHash())) {
                 return false;
             }
+
             return true;
         }
 
@@ -76,7 +83,8 @@ public class Blockchain {
         if (!isFirstBlockValid()) {
             return false;
         }
-        for (int i = 0; i < blocks.size(); i++) {
+
+        for (int i = 1; i < blocks.size(); i++) {
             Block currentBlock = blocks.get(i);
             Block previousBlock = blocks.get(i - 1);
 
@@ -84,6 +92,7 @@ public class Blockchain {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -93,6 +102,7 @@ public class Blockchain {
         for (Block block : blocks) {
             builder.append(block).append("\n");
         }
+
         return builder.toString();
     }
 
